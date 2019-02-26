@@ -1,17 +1,17 @@
-//CPU�p�̎v�l�A���S���Y�� ���x��3
-//3�^�[����̏�Ԃ𗘗p���Ď�����߂�
-//���x��2���]���֐������P
+//CPU用の思考アルゴリズム レベル3
+//3ターン先の状態を利用して手を決める
+//レベル2より評価関数を改善
 
 function ai03(f){
 
-	//�ǂݐ[��������
+	//読み深さを決定
 	var depth = 2;
 
-	//�\�ȑS������擾
+	//可能な全操作を取得
 	var opeList = availOperateList(f);
 
-	//�\�ȑS������s������́u����̃X�R�A�v���v�Z���A
-	//����̃X�R�A���ŏ��ɂȂ���I��
+	//可能な全操作を行った後の「相手のスコア」を計算し、
+	//相手のスコアが最小になる手を選択
 	var minPoint = 999999;
 	var minPointOpe = new Array();
 	var tmpPoint;
@@ -19,14 +19,14 @@ function ai03(f){
 	var i;
 
 	for(i=0;i<opeList.length;i++){
-		//�N���[�����쐬���A�����K�p
+		//クローンを作成し、操作を適用
 		tmp_f = f.clone();
 		tmp_f.operate(opeList[i]);
 
-		//�l�K�A���t�@�@�ɂ��X�R�A���v�Z
+		//ネガアルファ法によりスコアを計算
 		tmpPoint = ai03_NegaAlpha(tmp_f,depth,-999999,999999);
 
-		//�X�R�A���X�V
+		//スコアを更新
 		if(tmpPoint < minPoint){
 			minPoint = tmpPoint;
 			minPointOpe.splice(0,minPointOpe.length);
@@ -36,22 +36,22 @@ function ai03(f){
 		}
 	}
 
-	//�|�C���g���ŏ��ɂȂ�I�y���[�V��������1�I�����ĕԂ�
+	//ポイントが最小になるオペレーションから1つ選択して返す
 	var idx = Math.floor(Math.random()*minPointOpe.length);
 	return(minPointOpe[idx]);
 }
 
-//�l�K�A���t�@�@
-//f:�ǖʁAdepth:�[��
-//��Ԃ������Ă��鑤�ɂƂ��ẮA�ǖ�f�̓_�������߂�
-//����Ԃ������Ă��� = ���̋ǖʂɁ��~��u������������
+//ネガアルファ法
+//f:局面、depth:深さ
+//手番を持っている側にとっての、局面fの点数を求める
+//※手番を持っている = 今の局面に○×を置く権利がある
 function ai03_NegaAlpha(f,depth,a,b){
-	//�[��0���I�ǂł���ΐÓI�]���֐���Ԃ�
+	//深さ0か終局であれば静的評価関数を返す
 	if(depth==0 || judgeWinLose(f,winScore)!=NOTEND){
 		return ai03_staticScore(f,f.turn,f.noturn,depth);
 	}
 
-	//�\�ȑS������擾
+	//可能な全操作を取得
 	var opeList = availOperateList(f);
 	
 	var i,tmp_f;
@@ -66,38 +66,38 @@ function ai03_NegaAlpha(f,depth,a,b){
 	return a;
 }
 
-//�ÓI�]���֐�
-//me:�]���Ώۂ̃v���C���[
-//enemy:����v���C���[
+//静的評価関数
+//me:評価対象のプレイヤー
+//enemy:相手プレイヤー
 function ai03_staticScore(f,me,enemy,depth){
 	var point=0;
 
-	//���s����
+	//勝敗判定
 	var wl = judgeWinLose(f,winScore);
 	if(wl==NOTEND){
-	//���������Ă��Ȃ���Ε��ʂɃX�R�A���v�Z
-		point += (f.score[me])*100;			//�����̃X�R�A�������ق��������_
-		point -= (f.score[enemy])*100;		//����̃X�R�A�������Ƒ���
-		point += (ai03_countLiveLine(f,me,enemy))*10;	//�����ɂƂ��Đ����Ă���񂪑�����΍����_
-		point -= (ai03_countLiveLine(f,enemy,me))*10;	//����ɂƂ��Đ����Ă���񂪑�����Α���
+	//決着がついていなければ普通にスコアを計算
+		point += (f.score[me])*100;			//自分のスコアが多いほうが高得点
+		point -= (f.score[enemy])*100;		//相手のスコアが多いと損失
+		point += (ai03_countLiveLine(f,me,enemy))*10;	//自分にとって生きている列が多ければ高得点
+		point -= (ai03_countLiveLine(f,enemy,me))*10;	//時手にとって生きている列が多ければ損失
 	}else{
-	//���Ă΍����_(���߂̏����̉��l�����߂邽�߁A�[�����v���X)
+	//勝てば高得点(直近の勝ちの価値を高めるため、深さをプラス)
 		if(wl==me) point += (10000 + depth*10);
 		else point -= (10000 + depth*10);;
 	}
 	return point;
 }
 
-//�t�B�[���h���󂯎��A�����Ă����ɂ������~���u����Ă��邩��Ԃ�
-//��(���ɂƂ���)�񂪐����Ă��� = ���̗�Ɂ~������Ȃ� & �܂�������Ă��Ȃ�
-// = ���̗񂪏������낤�\��������
+//フィールドを受け取り、生きている列にいくつ○×が置かれているかを返す
+//※(○にとって)列が生きている = その列に×が一つもない & まだそろっていない
+// = その列が将来そろう可能性が高い
 function ai03_countLiveLine(f,me,enemy){
-	//�߂�l
+	//戻り値
 	var r = 0;
 	var i,j,tmp;
-	//�c���΂߂̗�����i�[�����z��
+	//縦横斜めの列情報を格納した配列
 	var lines = f.getLines();
-	//�S��ɑ΂��đ���
+	//全列に対して走査
 	for(i=0;i<lines.length;i++){
 		tmp = 0;
 		for(j=0;j<lines[i].length;j++){
@@ -108,7 +108,7 @@ function ai03_countLiveLine(f,me,enemy){
 				break;
 			}
 		}
-		//�����Ă����̓J�E���g�ΏۊO
+		//揃っている列はカウント対象外
 		if(tmp!=f.len){
 			r+=tmp;
 		}

@@ -1,31 +1,31 @@
-//CPU—p‚ÌvlƒAƒ‹ƒSƒŠƒYƒ€—p‚Ég‚í‚ê‚é‹¤’Ê‹@”\ŒS
-//‘å‚«‚¢•û‚ğ•Ô‚·
+//CPUç”¨ã®æ€è€ƒã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ç”¨ã«ä½¿ã‚ã‚Œã‚‹å…±é€šæ©Ÿèƒ½éƒ¡
+//å¤§ãã„æ–¹ã‚’è¿”ã™
 function max(x,y){
 	if(x>y) return x;
 	else return y;
 }
 
-//¬‚³‚¢•û‚ğ•Ô‚·
+//å°ã•ã„æ–¹ã‚’è¿”ã™
 function min(x,y){
 	if(x<y) return x;
 	else return y;
 }
 
-//ƒtƒB[ƒ‹ƒh‚ğó‚¯æ‚èA‚»‚ê‚É‘Î‚·‚éu‰Â”\‚È‘€ìˆê——v‚ğ•Ô‚·
+//ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’å—ã‘å–ã‚Šã€ãã‚Œã«å¯¾ã™ã‚‹ã€Œå¯èƒ½ãªæ“ä½œä¸€è¦§ã€ã‚’è¿”ã™
 function availOperateList(f){
 	var i,j,p;
 	var operateList = new Array();
 	for(i=0;i<f.len;i++){
 		for(j=0;j<f.len;j++){
-			//‰Â”\‚È‘€ì‚ğæ“¾
+			//å¯èƒ½ãªæ“ä½œã‚’å–å¾—
 			o = f.availOperate(i,j);
 			if(o==O_PUT){
-			//”z’u‚ª‰Â”\‚Èê‡
+			//é…ç½®ãŒå¯èƒ½ãªå ´åˆ
 				operateList.push({x:i,y:j});
 			}else if(o==O_MOVE){
-			//ˆÚ“®‚ª‰Â”\‚Èê‡
+			//ç§»å‹•ãŒå¯èƒ½ãªå ´åˆ
 				for(p=0;p<4;p++){
-					//u‚½‚¾‚Ì©Ev‚Í‰Â”\‚È‘€ì‚©‚çœŠO
+					//ã€ŒãŸã ã®è‡ªæ®ºã€ã¯å¯èƒ½ãªæ“ä½œã‹ã‚‰é™¤å¤–
 					if(!isOut(""+i+j,p)){
 						operateList.push({x:i,y:j,p:p});
 					}

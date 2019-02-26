@@ -1,5 +1,5 @@
-//CPU—p‚ÌvlƒAƒ‹ƒSƒŠƒYƒ€ ƒŒƒxƒ‹1
-//1ƒ^[ƒ“æ‚Ìó‘Ô‚Ì‚İ—˜—p‚µ‚Äè‚ğŒˆ‚ß‚é
+//CPUç”¨ã®æ€è€ƒã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ  ãƒ¬ãƒ™ãƒ«1
+//1ã‚¿ãƒ¼ãƒ³å…ˆã®çŠ¶æ…‹ã®ã¿åˆ©ç”¨ã—ã¦æ‰‹ã‚’æ±ºã‚ã‚‹
 function ai01(f){
 
 	var maxPoint = -999999;
@@ -7,19 +7,19 @@ function ai01(f){
 	var tmpOpe = null;
 	var tmpPoint;
 
-	//‘SƒZƒ‹‚É‘Î‚µ‚Äƒ|ƒCƒ“ƒg‚ğŒvZ
+	//å…¨ã‚»ãƒ«ã«å¯¾ã—ã¦ãƒã‚¤ãƒ³ãƒˆã‚’è¨ˆç®—
 	var i,j,p,o;
 	for(i=0;i<f.len;i++){
 		for(j=0;j<f.len;j++){
-			//‰Â”\‚È‘€ì‚ğæ“¾
+			//å¯èƒ½ãªæ“ä½œã‚’å–å¾—
 			o = f.availOperate(i,j);
 			if(o==O_PUT){
-			//”z’u‚ª‰Â”\‚Èê‡
+			//é…ç½®ãŒå¯èƒ½ãªå ´åˆ
 				tmpOpe = {x:i,y:j};
 				tmpPoint = ai01_calcPoint(f,tmpOpe);
 				maxPoint = ai01_updateMaxPointOpe(tmpPoint,tmpOpe,maxPoint,maxPointOpe);
 			}else if(o==O_MOVE){
-			//ˆÚ“®‚ª‰Â”\‚Èê‡
+			//ç§»å‹•ãŒå¯èƒ½ãªå ´åˆ
 				for(p=0;p<4;p++){
 					tmpOpe = {x:i,y:j,p:p};
 					tmpPoint = ai01_calcPoint(f,tmpOpe);
@@ -29,13 +29,13 @@ function ai01(f){
 		}
 	}
 
-	//ƒ|ƒCƒ“ƒg‚ªÅ‘å‚É‚È‚éƒIƒyƒŒ[ƒVƒ‡ƒ“‚©‚ç1‚Â‘I‘ğ‚µ‚Ä•Ô‚·
+	//ãƒã‚¤ãƒ³ãƒˆãŒæœ€å¤§ã«ãªã‚‹ã‚ªãƒšãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‹ã‚‰1ã¤é¸æŠã—ã¦è¿”ã™
 	var idx = Math.floor(Math.random()*maxPointOpe.length);
 	return(maxPointOpe[idx]);
 }
 
-//Å‘åƒ|ƒCƒ“ƒg‚É‚È‚éè‚ğXV‚·‚é
-//–ß‚è’l‚ÍXVŒã‚ÌÅ‘åƒ|ƒCƒ“ƒg
+//æœ€å¤§ãƒã‚¤ãƒ³ãƒˆã«ãªã‚‹æ‰‹ã‚’æ›´æ–°ã™ã‚‹
+//æˆ»ã‚Šå€¤ã¯æ›´æ–°å¾Œã®æœ€å¤§ãƒã‚¤ãƒ³ãƒˆ
 function ai01_updateMaxPointOpe(tmpPoint,tmpOpe,maxPoint,maxPointOpe){
 	if(tmpPoint > maxPoint){
 		maxPoint = tmpPoint;
@@ -47,17 +47,17 @@ function ai01_updateMaxPointOpe(tmpPoint,tmpOpe,maxPoint,maxPointOpe){
 	return maxPoint;
 }
 
-//ƒtƒB[ƒ‹ƒhf‚É‘Î‚µ‚ÄA‘€ìope‚ğì—p‚³‚¹‚½ê‡‚Ìƒ|ƒCƒ“ƒg‚ğ‹‚ß‚é
+//ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰fã«å¯¾ã—ã¦ã€æ“ä½œopeã‚’ä½œç”¨ã•ã›ãŸå ´åˆã®ãƒã‚¤ãƒ³ãƒˆã‚’æ±‚ã‚ã‚‹
 function ai01_calcPoint(f,ope){
 	var point = 0;
-	//ƒNƒ[ƒ“ì¬
+	//ã‚¯ãƒ­ãƒ¼ãƒ³ä½œæˆ
 	var tmp_f = f.clone();
 	tmp_f.operate(ope);
 
-	//‘µ‚Á‚½—ñ‚ª‘½‚¢‚Ù‚¤‚ª‚“¾“_
+	//æƒã£ãŸåˆ—ãŒå¤šã„ã»ã†ãŒé«˜å¾—ç‚¹
 	point += (tmp_f.score[tmp_f.noturn] - tmp_f.score[tmp_f.turn])*100;
 
-	//—ñ”‚ª“¯‚¶‚Æ‚«‚Í”z’u‚³‚ê‚Ä‚¢‚é›~‚Ì”‚ª‘½‚¢‚Ù‚¤‚ª‚“¾“_
+	//åˆ—æ•°ãŒåŒã˜ã¨ãã¯é…ç½®ã•ã‚Œã¦ã„ã‚‹â—‹Ã—ã®æ•°ãŒå¤šã„ã»ã†ãŒé«˜å¾—ç‚¹
 	point += (tmp_f.count[tmp_f.noturn] - tmp_f.count[tmp_f.turn])*10;
 
 	return point;
