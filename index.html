@@ -1,0 +1,184 @@
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset="Shift_JIS>
+	<title>○×ゲーム(改)</title>
+
+	<style type="text/css">
+		<!--
+		table{ font-size:10pt; }
+		td.playername{ font-size:12pt; }
+		td.teban{ font-size:13pt; }
+		td.score{ font-size:15pt; }
+		td.winlose{ color:blue; font-weight:bold; font-size:10pt}
+		div.score{ font-size:15pt; }
+		h4 { font-size:10pt; }
+		p { font-size:9pt; }
+		-->
+	</style>
+
+	<script type="text/javascript" src="./jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="./field.js"></script>
+	<script type="text/javascript" src="./marubatsu.js"></script>
+	<script type="text/javascript" src="./aiCommon.js"></script>
+	<script type="text/javascript" src="./ai00.js"></script>
+	<script type="text/javascript" src="./ai01.js"></script>
+	<script type="text/javascript" src="./ai02.js"></script>
+	<script type="text/javascript" src="./ai03.js"></script>
+	<script type="text/javascript" src="./ai04.js"></script>
+</head>
+<body id="body">
+
+
+	<!-- プレイヤー選択欄 -->
+	<form name="inputForm">
+
+	<table border="1" bgcolor="#FAEBD7"><tr><td>
+		<table style="width:210px">
+			<tr>
+				<td colspan="2">
+					<b>プレイヤー</b>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table border="1" style="width:105px;height:80" rules="none">
+						<tr>
+							<td>
+								先手(○)
+							</td>
+							<td id="winlose1" class="winlose">
+								&nbsp;
+							</td>
+						</tr>
+						<tr><td colspan="2">
+							<select id="player1">
+								<option value="HUMAN" selected>Human</option>
+								<!-- <option value="CPU0" >CPU(LV.0)</option> -->
+								<option value="CPU1" >CPU(LV.1)</option>
+								<option value="CPU2" >CPU(LV.2)</option>
+								<option value="CPU3" >CPU(LV.3)</option>
+							</select>
+						</td></tr>
+						<tr>
+							<td class="score" id="score1"colspan="2">
+							　0
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td>
+					<table border="1" style="width:105px;height:80" rules="none">
+						<tr>
+							<td>
+								後手(×)
+							</td>
+							<td id="winlose2" class="winlose">
+								&nbsp;
+							</td>
+						</tr>
+						<tr><td colspan="2">
+							<select id="player2">
+								<option value="HUMAN">Human</option>
+<!--								<option value="CPU0" >CPU(LV.0)</option> -->
+								<option value="CPU1" selected>CPU(LV.1)</option>
+								<option value="CPU2">CPU(LV.2)</option>
+								<option value="CPU3" >CPU(LV.3)</option>
+							</select>
+						</td></tr>
+						<tr>
+							<td class="score" id="score2" colspan="2">
+								　0
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+
+		<hr>
+
+		<table>
+			<tr>
+				<td colspan="2">
+					<b>ルール</b>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<font size="2">サイズ</font><br>
+					<select id="num" onchange="setFieldSize()">
+						<option value="3">3×3</option>
+						<option value="4">4×4</option>
+						<!-- <option value="5">5×5</option> -->
+					</select>
+				</td>
+				<td>
+					<font size="2">先取</font><br>
+					<select id="winScore">
+						<option value="1">1本</option>
+						<option value="3" selected>3本</option>
+						<option value="10">10本</option>
+						<option value="100">100本</option>
+						<option value="-1">無制限</option>
+					</select>
+				</td>
+			</tr>
+		</table>
+
+		<hr>
+
+		<table>
+			<tr>
+				<td>
+					<input id="startbutton" type="button" onclick="startGame();" value="スタート" style="width:70px">
+				</td>
+			</tr>
+		</table>
+	</td></tr></table>
+	</form>
+
+	<!-- 操作説明 -->
+	<table border="1" cellspacing="0">
+		<tr>
+			<td>
+				<h4>遊び方</h3>
+				<p>・○×ゲームの要領で、交互に○×を置いていきます。<br>
+				   ・一度置いた○×は、上下左右に動かせます。<br>
+				   &nbsp;(動いた先に○×があった場合は押し出されます。)<br>
+				   ・縦横斜めに○×がそろうとポイントになります。<br>
+				   ・先に、指定された分のポイントをためれば勝ちです。<br>
+				   &nbsp;(5本先取なら先に5列そろえれば勝ち)
+				</p>
+			</td>
+		</tr>
+	</table>
+
+	<!-- 点数を表示する場所 -->
+	<!-- 未使用なのでコメントアウト中
+	<div class="score" id="score1" style="position:absolute;top:85;left:30">
+	</div>
+	<div class="score" id="score2" style="position:absolute;top:85;left:130">
+	</div>
+	-->
+
+	<!-- 盤(○×が置かれる場所) -->
+	<div id="board"></div>
+
+	<!-- 隠し画像が配置される箇所 -->
+	<div id="hiddenimage"></div>
+
+	<!--
+	<div id="result" style="position:absolute;top:65;left:350;font-size:100;color:brown;font-style:oblique">
+	</div>
+	-->
+
+	<br><br><br><br>
+	<p><font size="2">	
+		<a href="../index.html">TOP</a>
+	</font></p>
+
+<div id="debug">
+
+</body>
+
+</html>
