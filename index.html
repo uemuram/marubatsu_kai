@@ -1,7 +1,7 @@
 <html>
 <head>
-	<meta http-equiv="Content-type" content="text/html; charset="Shift_JIS>
-	<title>���~�Q�[��(��)</title>
+	<meta http-equiv="Content-type" content="text/html; charset="UTF-8>
+	<title>○×ゲーム(改)</title>
 
 	<style type="text/css">
 		<!--
@@ -29,14 +29,14 @@
 <body id="body">
 
 
-	<!-- �v���C���[�I�� -->
+	<!-- プレイヤー選択欄 -->
 	<form name="inputForm">
 
 	<table border="1" bgcolor="#FAEBD7"><tr><td>
 		<table style="width:210px">
 			<tr>
 				<td colspan="2">
-					<b>�v���C���[</b>
+					<b>プレイヤー</b>
 				</td>
 			</tr>
 			<tr>
@@ -44,7 +44,7 @@
 					<table border="1" style="width:105px;height:80" rules="none">
 						<tr>
 							<td>
-								���(��)
+								先手(○)
 							</td>
 							<td id="winlose1" class="winlose">
 								&nbsp;
@@ -61,7 +61,7 @@
 						</td></tr>
 						<tr>
 							<td class="score" id="score1"colspan="2">
-							�@0
+							　0
 							</td>
 						</tr>
 					</table>
@@ -70,7 +70,7 @@
 					<table border="1" style="width:105px;height:80" rules="none">
 						<tr>
 							<td>
-								���(�~)
+								後手(×)
 							</td>
 							<td id="winlose2" class="winlose">
 								&nbsp;
@@ -87,7 +87,7 @@
 						</td></tr>
 						<tr>
 							<td class="score" id="score2" colspan="2">
-								�@0
+								　0
 							</td>
 						</tr>
 					</table>
@@ -100,26 +100,26 @@
 		<table>
 			<tr>
 				<td colspan="2">
-					<b>���[��</b>
+					<b>ルール</b>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<font size="2">�T�C�Y</font><br>
+					<font size="2">サイズ</font><br>
 					<select id="num" onchange="setFieldSize()">
-						<option value="3">3�~3</option>
-						<option value="4">4�~4</option>
-						<!-- <option value="5">5�~5</option> -->
+						<option value="3">3×3</option>
+						<option value="4">4×4</option>
+						<!-- <option value="5">5×5</option> -->
 					</select>
 				</td>
 				<td>
-					<font size="2">���</font><br>
+					<font size="2">先取</font><br>
 					<select id="winScore">
-						<option value="1">1�{</option>
-						<option value="3" selected>3�{</option>
-						<option value="10">10�{</option>
-						<option value="100">100�{</option>
-						<option value="-1">������</option>
+						<option value="1">1本</option>
+						<option value="3" selected>3本</option>
+						<option value="10">10本</option>
+						<option value="100">100本</option>
+						<option value="-1">無制限</option>
 					</select>
 				</td>
 			</tr>
@@ -130,41 +130,41 @@
 		<table>
 			<tr>
 				<td>
-					<input id="startbutton" type="button" onclick="startGame();" value="�X�^�[�g" style="width:70px">
+					<input id="startbutton" type="button" onclick="startGame();" value="スタート" style="width:70px">
 				</td>
 			</tr>
 		</table>
 	</td></tr></table>
 	</form>
 
-	<!-- ������� -->
+	<!-- 操作説明 -->
 	<table border="1" cellspacing="0">
 		<tr>
 			<td>
-				<h4>�V�ѕ�</h3>
-				<p>�E���~�Q�[���̗v�̂ŁA���݂Ɂ��~��u���Ă����܂��B<br>
-				   �E��x�u�������~�́A�㉺���E�ɓ������܂��B<br>
-				   &nbsp;(��������Ɂ��~���������ꍇ�͉����o����܂��B)<br>
-				   �E�c���΂߂Ɂ��~�����낤�ƃ|�C���g�ɂȂ�܂��B<br>
-				   �E��ɁA�w�肳�ꂽ���̃|�C���g�����߂�Ώ����ł��B<br>
-				   &nbsp;(5�{���Ȃ���5�񂻂낦��Ώ���)
+				<h4>遊び方</h3>
+				<p>・○×ゲームの要領で、交互に○×を置いていきます。<br>
+				   ・一度置いた○×は、上下左右に動かせます。<br>
+				   &nbsp;(動いた先に○×があった場合は押し出されます。)<br>
+				   ・縦横斜めに○×がそろうとポイントになります。<br>
+				   ・先に、指定された分のポイントをためれば勝ちです。<br>
+				   &nbsp;(5本先取なら先に5列そろえれば勝ち)
 				</p>
 			</td>
 		</tr>
 	</table>
 
-	<!-- �_����\������ꏊ -->
-	<!-- ���g�p�Ȃ̂ŃR�����g�A�E�g��
+	<!-- 点数を表示する場所 -->
+	<!-- 未使用なのでコメントアウト中
 	<div class="score" id="score1" style="position:absolute;top:85;left:30">
 	</div>
 	<div class="score" id="score2" style="position:absolute;top:85;left:130">
 	</div>
 	-->
 
-	<!-- ��(���~���u�����ꏊ) -->
+	<!-- 盤(○×が置かれる場所) -->
 	<div id="board"></div>
 
-	<!-- �B���摜���z�u�����ӏ� -->
+	<!-- 隠し画像が配置される箇所 -->
 	<div id="hiddenimage"></div>
 
 	<!--
